@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+     maxBytesLocalHeap="64M" 
+     name="myBigMemoryMaxConfig">
+
+	<defaultCache maxElementsInMemory="0" eternal="false" statistics="true">
+		<cacheEventListenerFactory class="net.sf.ehcache.event.TerracottaCacheEventReplicationFactory" /> 
+		<terracotta clustered="true" />
+	</defaultCache>
+
+	<cache name="com.djarum.demo.model.Department" maxElementsInMemory="0" eternal="false" statistics="true">
+		<cacheEventListenerFactory class="net.sf.ehcache.event.TerracottaCacheEventReplicationFactory" /> 
+		<terracotta clustered="true" />
+	</cache>
+	
+	<terracottaConfig url="10.1.1.2:9510" />
+ 
+</ehcache>

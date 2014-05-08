@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd 
+	http://www.springframework.org/schema/jdbc 
+	http://www.springframework.org/schema/jdbc/spring-jdbc.xsd 
+	http://www.springframework.org/schema/data/jpa 
+	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--Following data source is for use H2 java embedded database -->
+	<!-- <jdbc:embedded-database id="embeddedDataSource"
+		type="H2">
+	</jdbc:embedded-database> -->
+	
+	<context:annotation-config />
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	
+	<bean class="org.springframework.orm.hibernate4.HibernateExceptionTranslator" />
+	
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="djarumPUTest" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<!-- <property name="persistenceProviderClass">
+			<bean class="org.hibernate.ejb.HibernatePersistence.class" />
+		</property> -->
+		<property name="jpaProperties">
+			<props>
+				<prop key="show_sql">true</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</prop>
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+				<prop key="hibernate.generate_statistics">true</prop>
+				<prop key="hibernate.cache.use_structured_entries">true</prop>
+				<prop key="hibernate.cache.provider_configuration_file_resource_path">ehcache.xml</prop>
+				<prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<jpa:repositories base-package="com.djarum.demo.repository" />
+	<!--context:component-scan base-package="com.djarum.demo.dao" />
+	<context:component-scan base-package="com.djarum.demo.dao.impl" /-->
+
+	<bean id="departmentDao" class="com.djarum.demo.dao.impl.DepartmentDaoImpl"/>
+	
+</beans>

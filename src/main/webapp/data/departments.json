@@ -1,0 +1,7 @@
+{
+    "success": true,
+    "data": [
+    	{"id": 10, "name": 'DEPT_01', "lastModified": '20131018'},
+    	{"id": 20, "name": 'DEPT_02', "lastModified": '20131018'}
+    ]
+}
